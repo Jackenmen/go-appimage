@@ -74,13 +74,7 @@ var watchedDirectories []string
 
 var home, _ = os.UserHomeDir()
 var candidateDirectories = []string{
-	xdg.UserDirs.Download,
-	xdg.UserDirs.Desktop,
-	home + "/.local/bin",
-	home + "/bin",
 	home + "/Applications",
-	"/opt",
-	"/usr/local/bin",
 }
 
 func main() {
