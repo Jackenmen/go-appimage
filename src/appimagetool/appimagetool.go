@@ -495,7 +495,7 @@ func GenerateAppImage(
 	// then fill in update information based on GITHUB_REPOSITORY
 	//     https://docs.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables
 	//     GITHUB_REPOSITORY: The slug (in form: owner_name/repo_name) of the repository currently being built.
-	//     GITHUB_REF: e.g., "refs/pull/421/merge", "refs/heads/master"
+	//     GITHUB_REF: e.g., "refs/pull/421/merge", "refs/heads/personal-fork"
 	if os.Getenv("GITHUB_REPOSITORY") != "" && generateUpdateInformation {
 		fmt.Println("Running on GitHub Actions")
 		if strings.Contains(os.Getenv("GITHUB_REF"), "/pull/") {
@@ -503,7 +503,7 @@ func GenerateAppImage(
 		} else {
 			parts := strings.Split(os.Getenv("GITHUB_REPOSITORY"), "/")
 			var channel string
-			if os.Getenv("GITHUB_REF") != "" && os.Getenv("GITHUB_REF") != "refs/heads/master" {
+			if os.Getenv("GITHUB_REF") != "" && os.Getenv("GITHUB_REF") != "refs/heads/personal-fork" {
 				channel = "latest"
 			} else {
 				channel = "continuous"
