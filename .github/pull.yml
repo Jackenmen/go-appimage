@@ -1,0 +1,14 @@
+version: "1"
+label: ":arrow_heading_down: update fork from upstream"
+rules:
+  - base: master
+    upstream: probonopd:master
+    mergeMethod: hardreset
+    mergeUnstable: true
+
+  - base: personal-fork
+    upstream: probonopd:master
+    mergeMethod: merge
+    mergeUnstable: true
+    conflictReviewers:
+      - jack1142
