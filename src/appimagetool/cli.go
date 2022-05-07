@@ -141,14 +141,14 @@ func bootstrapAppImageBuild(c *cli.Context) error {
 	// check if the number of arguments are stictly 1, if not
 	// return
 	if c.NArg() != 1 {
-		log.Fatal("Please specify the path to the AppDir which you would like to aid.")
+		log.Fatal("Please specify the path to the desktop file of the application in your AppDir")
 
 	}
 	fileToAppDir := c.Args().Get(0)
 
 	// does the file exist? if not early-exit
 	if !helpers.CheckIfFileOrFolderExists(fileToAppDir) {
-		log.Fatal("The specified directory does not exist")
+		log.Fatal("The specified file does not exist")
 	}
 
 	// Add the location of the executable to the $PATH
@@ -172,7 +172,7 @@ func bootstrapAppImageBuild(c *cli.Context) error {
 		// for optimum performance, the following default parameters are passed
 		// fileToAppDir: 				fileToAppDir
 		// generateUpdateInformation: 	true (always guess based on environment variables)
-		// squashfsCompressionType: 	gzip
+		// squashfsCompressionType: 	zstd
 		// checkAppStreamMetadata: 		true (always verify the appstream metadata if files exists
 		// 								using appstreamcli
 		// updateinformation: 			"" 	(empty string, we want to guess the update information from
@@ -182,7 +182,7 @@ func bootstrapAppImageBuild(c *cli.Context) error {
 			fileToAppDir, "",
 			true,
 			"",
-			"gzip",
+			"zstd",
 			true,
 			"",
 			"appimagetool",
