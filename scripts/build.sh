@@ -78,9 +78,28 @@ build () {
     arm64) local ARCH=aarch64;;
     arm) local ARCH=armhf;;
   esac
+  case $1 in
+    amd64) export ZIGTARGET=x86_64-linux-musl;;
+    386) export ZIGTARGET=i386-linux-musl;;
+    arm64) export ZIGTARGET=aarch64-linux-musl;;
+    arm) export ZIGTARGET=arm-linux-musleabihf;;
+  esac
+  export CC="zig cc -target $ZIGTARGET"
   local PROG=$2
   CLEANUP+=($BUILDDIR/$PROG-$ARCH.AppDir)
-  go build -o $BUILDDIR -v -trimpath -ldflags="-s -w -X main.commit=$COMMIT" $PROJECT/src/$PROG
+  export GOGCCFLAGS="-Wl,--strip-all" # strip
+  echo ARCH: $ARCH
+  echo GOARCH: $GOARCH
+  echo GOHOSTARCH: $GOHOSTARCH
+  echo BUILDARCH: $BUILDARCH
+  echo GOGCCFLAGS: $GOGCCFLAGS
+  echo CC: $CC
+  which zig
+  zig env
+  CGO_ENABLED=1 go build -o $BUILDDIR -v -trimpath -ldflags="-linkmode=external -extldflags \"-static\" -s -w -X main.commit=$COMMIT" $PROJECT/src/$PROG
+  ls -lh $PROG
+  file $PROG
+  strip $PROG || true
   # common appimage steps
   rm -rf $BUILDDIR/$PROG-$ARCH.AppDir || true
   mkdir -p $BUILDDIR/$PROG-$ARCH.AppDir/usr/bin
@@ -119,6 +138,7 @@ Comment=Tool to generate AppImages from AppDirs
 Icon=appimage
 Categories=Development;
 Terminal=true
+NoDisplay=true
 EOF
   elif [ $PROG == mkappimage ]; then
     ( cd $BUILDDIR/$PROG-$ARCH.AppDir/usr/bin/ ; wget -c https://github.com/probonopd/static-tools/releases/download/continuous/desktop-file-validate-$AIARCH -O desktop-file-validate )
@@ -193,7 +213,15 @@ fi
 # Install dependencies if needed
 if [ $GITHUB_ACTIONS ]; then
   sudo apt-get update
-  sudo apt-get install --yes wget file gcc
+  sudo apt-get install --yes wget file
+fi
+
+# Install zig, it comes with musl libc
+if [ ! -e /usr/local/bin/zig ]; then
+  wget -c -q "https://ziglang.org/builds/zig-linux-x86_64-0.10.0-dev.2112+0df28f9d4.tar.xz"
+  tar xf zig-linux-*-*.tar.xz
+  sudo mv zig-linux-*/* /usr/local/bin/
+  which zig
 fi
 
 if [ -z $BUILDTOOL ]; then
