@@ -8,14 +8,12 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/adrg/xdg"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 
 	"github.com/probonopd/go-appimage/internal/helpers"
-	"github.com/prometheus/procfs"
 )
 
 // TODO: Understand whether we can make clever use of
@@ -184,9 +182,6 @@ func main() {
 	// Maybe not needed? At least on Xubuntu it seems to work without this
 	// but perhaps it is why KDE ignores our nice thumbnails
 
-	// React to partitions being mounted and unmounted
-	go monitorUdisks()
-
 	watchDirectories()
 
 	// Ticker to periodically check whether MQTT is still connected.
@@ -325,29 +320,6 @@ func watchDirectories() {
 	for _, dir := range candidateDirectories {
 		if helpers.Exists(dir) {
 			watchedDirectories = append(watchedDirectories, dir)
-		}
-	}
-
-	mounts, _ := procfs.GetMounts()
-	// FIXME: This breaks when the partition label has "-", see https://github.com/prometheus/procfs/issues/227
-
-	for _, mount := range mounts {
-		if *verbosePtr {
-			log.Println("main: MountPoint", mount.MountPoint)
-		}
-		if !strings.HasPrefix(mount.MountPoint, "/sys") && // Is /dev needed for openSUSE Live?
-			// strings.HasPrefix(mount.MountPoint, "/run") == false && // Manjaro mounts the device on which the Live ISO is in /run, so we cannot exclude that
-			!strings.HasPrefix(mount.MountPoint, "/tmp") &&
-			!strings.HasPrefix(mount.MountPoint, "/proc") {
-			fmt.Println(mount.SuperOptions)
-			if helpers.Exists(mount.MountPoint + "/Applications") {
-				if _, ok := mount.SuperOptions["showexec"]; ok {
-					go sendErrorDesktopNotification("UDisks showexec issue", "Applications cannot run from \n"+mount.MountPoint+". \nSee \nhttps://github.com/storaged-project/udisks/issues/707")
-					printUdisksShowexecHint()
-				} else {
-					watchedDirectories = helpers.AppendIfMissing(watchedDirectories, mount.MountPoint+"/Applications")
-				}
-			}
 		}
 	}
 
