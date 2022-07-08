@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/probonopd/go-appimage/internal/helpers"
+	"github.com/jack1142/go-appimage/internal/helpers"
 	"github.com/urfave/cli/v2"
 )
 

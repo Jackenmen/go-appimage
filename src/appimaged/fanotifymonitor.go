@@ -6,7 +6,7 @@
 
 // FIXME: This builds on amd64 but not on arm64, getting:
 // fanotifymonitor.go:111:10: nd.Mark undefined (type *fanotify.NotifyFD has no field or method Mark)
-// https://travis-ci.com/probonopd/go-appimage/jobs/257232286
+// https://travis-ci.com/jack1142/go-appimage/jobs/257232286
 // Hence the code is commented out for now.
 
 package main
@@ -30,7 +30,7 @@ import (
 	"github.com/amenzhinsky/go-polkit"
 
 	"github.com/cloudimmunity/pdiscover"
-	helpers "github.com/probonopd/go-appimage/internal/helpers"
+	helpers "github.com/jack1142/go-appimage/internal/helpers"
 	"github.com/s3rj1k/go-fanotify/fanotify"
 )
 

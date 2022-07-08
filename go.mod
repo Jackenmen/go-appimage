@@ -1,4 +1,4 @@
-module github.com/probonopd/go-appimage
+module github.com/jack1142/go-appimage
 
 go 1.17
 

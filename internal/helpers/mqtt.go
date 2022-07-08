@@ -25,9 +25,9 @@
 // To test:
 // Go to http://www.hivemq.com/demos/websocket-client/
 // Publish to topic
-// p9q358t/github.com/probonopd/go-appimage/continuous/version
+// p9q358t/github.com/jack1142/go-appimage/continuous/version
 // p9q358t/gh-releases-zsync%7CAppImage%7CAppImageKit%7Ccontinuous%7Cappimagetool-x86_64.AppImage.zsync/version
-// p9q358t/gh-releases-zsync%7Cprobonopd%7Cmerkaartor%7Ccontinuous%7CMerkaartor%2A-x86_64.AppImage.zsync/version
+// p9q358t/gh-releases-zsync%7Cjack1142%7Cmerkaartor%7Ccontinuous%7CMerkaartor%2A-x86_64.AppImage.zsync/version
 // a message with the current $VERSION string for the continuous build
 // and Retain enabled
 //

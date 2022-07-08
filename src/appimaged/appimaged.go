@@ -13,7 +13,7 @@ import (
 	"github.com/adrg/xdg"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 
-	"github.com/probonopd/go-appimage/internal/helpers"
+	"github.com/jack1142/go-appimage/internal/helpers"
 )
 
 // TODO: Understand whether we can make clever use of
@@ -140,7 +140,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		// go SubscribeMQTT(MQTTclient, "gh-releases-zsync|probonopd|merkaartor|continuous|Merkaartor-*-x86_64.AppImage.zsync")
+		// go SubscribeMQTT(MQTTclient, "gh-releases-zsync|jack1142|merkaartor|continuous|Merkaartor-*-x86_64.AppImage.zsync")
 		// go SubscribeMQTT(MQTTclient, "gh-releases-zsync|AppImage|AppImageKit|continuous|appimagetool-x86_64.AppImage.zsync")
 
 		MQTTclient = connect("sub", uri)
